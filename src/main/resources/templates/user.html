@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" 
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>用戶資訊 - Spring Security SAML Test</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 900px;
+            margin: 50px auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        .container {
+            background: white;
+            border-radius: 10px;
+            padding: 40px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        h2 {
+            color: #667eea;
+            border-bottom: 2px solid #667eea;
+            padding-bottom: 10px;
+            margin-top: 30px;
+        }
+        .success-box {
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+            border-left: 4px solid #28a745;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+            color: #155724;
+        }
+        .info-box {
+            background: #f8f9fa;
+            border-left: 4px solid #667eea;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+        .attribute-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        .attribute-table th,
+        .attribute-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        .attribute-table th {
+            background: #667eea;
+            color: white;
+            font-weight: bold;
+        }
+        .attribute-table tr:hover {
+            background: #f5f5f5;
+        }
+        .btn {
+            display: inline-block;
+            padding: 12px 30px;
+            background: #667eea;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            margin: 10px 5px;
+            transition: background 0.3s;
+            border: none;
+            cursor: pointer;
+        }
+        .btn:hover {
+            background: #5568d3;
+        }
+        .btn-danger {
+            background: #dc3545;
+        }
+        .btn-danger:hover {
+            background: #c82333;
+        }
+        .button-group {
+            text-align: center;
+            margin-top: 30px;
+        }
+        .user-name {
+            font-size: 1.5em;
+            color: #667eea;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>✅ SAML 認證成功！</h1>
+        
+        <div class="success-box">
+            <h3>登入成功</h3>
+            <p>您已通過 SAML2 認證成功登入系統。</p>
+            <p>使用者名稱: <span class="user-name" th:text="${username}">Unknown</span></p>
+        </div>
+
+        <h2>📋 SAML 屬性資訊</h2>
+        <div class="info-box">
+            <p><strong>Registration ID:</strong> <span th:text="${registrationId}">cas</span></p>
+        </div>
+
+        <h2>🔍 用戶屬性清單</h2>
+        <table class="attribute-table">
+            <thead>
+                <tr>
+                    <th>屬性名稱</th>
+                    <th>屬性值</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:if="${attributes == null or attributes.isEmpty()}">
+                    <td colspan="2" style="text-align: center; color: #999;">沒有可用的屬性資訊</td>
+                </tr>
+                <tr th:each="attr : ${attributes}">
+                    <td><strong th:text="${attr.key}">Attribute Name</strong></td>
+                    <td th:text="${attr.value}">Attribute Value</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="info-box">
+            <h3>💡 說明</h3>
+            <p>上述屬性是從 CAS Server (IDP) 透過 SAML 斷言傳遞過來的用戶資訊。</p>
+            <p>這些資訊可以用來：</p>
+            <ul>
+                <li>顯示用戶個人資料</li>
+                <li>進行權限授予</li>
+                <li>追蹤用戶行為</li>
+                <li>個人化使用者體驗</li>
+            </ul>
+        </div>
+
+        <div class="button-group">
+            <a href="/" class="btn">🏠 返回首頁</a>
+            <form th:action="@{/logout}" method="post" style="display: inline;">
+                <button type="submit" class="btn btn-danger">🚪 登出</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>
