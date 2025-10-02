@@ -144,10 +144,24 @@
             </ul>
         </div>
 
+        <div class="info-box" style="background: #fff3cd; border-left-color: #ffc107; margin-top: 30px;">
+            <h3>🔐 關於登出</h3>
+            <p><strong>SAML Single Logout (SLO)：</strong></p>
+            <p>點擊下方【登出】按鈕將會觸發 SAML Single Logout 流程，這會：</p>
+            <ul>
+                <li>✅ 登出當前應用程式 (SP)</li>
+                <li>✅ 同時登出 Keycloak Identity Provider (IDP)</li>
+                <li>✅ 清除所有相關的 SAML session</li>
+            </ul>
+            <p style="color: #856404; margin-top: 10px;">
+                <strong>注意：</strong>如果 IDP 不支援 SLO 或網路異常，登出可能會失敗。
+            </p>
+        </div>
+
         <div class="button-group">
             <a href="/" class="btn">🏠 返回首頁</a>
             <form th:action="@{/logout}" method="post" style="display: inline;">
-                <button type="submit" class="btn btn-danger">🚪 登出</button>
+                <button type="submit" class="btn btn-danger">🚪 登出 (SAML SLO)</button>
             </form>
         </div>
     </div>

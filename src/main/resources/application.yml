@@ -45,6 +45,11 @@ spring:
               # Assertion Consumer Service - 接收 SAML 回應的端點
               location: http://localhost:8080/login/saml2/sso/keycloak
               binding: POST
+            singlelogout:
+              # Single Logout Service - SP 接收登出請求的端點
+              url: http://localhost:8080/logout/saml2/slo
+              response-url: http://localhost:8080/logout/saml2/slo
+              binding: POST
 
 # 日誌設定
 logging:

@@ -63,11 +63,43 @@
             color: #667eea;
             font-weight: bold;
         }
+        .success-box {
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+            border-left: 4px solid #28a745;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+            color: #155724;
+        }
     </style>
+    <script th:inline="javascript">
+        // 檢查 URL 參數，顯示登出成功訊息
+        window.addEventListener('DOMContentLoaded', (event) => {
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.get('logout') === 'success') {
+                const successBox = document.getElementById('logout-success');
+                if (successBox) {
+                    successBox.style.display = 'block';
+                    // 3 秒後自動隱藏
+                    setTimeout(() => {
+                        successBox.style.display = 'none';
+                    }, 5000);
+                }
+            }
+        });
+    </script>
 </head>
 <body>
     <div class="container">
         <h1>🔐 Spring Security SAML2 認證測試</h1>
+        
+        <!-- 登出成功訊息 -->
+        <div id="logout-success" class="success-box" style="display: none;">
+            <h3>✅ 登出成功！</h3>
+            <p>您已成功透過 SAML Single Logout 登出系統。</p>
+            <p>您的 Service Provider (SP) 和 Identity Provider (IDP) session 都已被清除。</p>
+        </div>
         
         <div class="info-box">
             <h2>歡迎！</h2>

@@ -5,7 +5,11 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.saml2.provider.service.registration.RelyingPartyRegistrationRepository;
+import org.springframework.security.saml2.provider.service.web.authentication.logout.Saml2LogoutRequestResolver;
+import org.springframework.security.saml2.provider.service.web.authentication.logout.OpenSaml4LogoutRequestResolver;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
+import org.springframework.security.web.authentication.logout.SimpleUrlLogoutSuccessHandler;
 
 import static org.springframework.security.config.Customizer.withDefaults;
 
@@ -15,7 +19,7 @@ import static org.springframework.security.config.Customizer.withDefaults;
  * 此配置類別負責設定 SAML2 Service Provider 的安全設定
  * 包含：
  * 1. SAML2 登入配置
- * 2. SAML2 登出配置
+ * 2. SAML2 登出配置 (支援 Single Logout)
  * 3. 請求授權規則
  * 4. Metadata 端點配置
  */
@@ -41,8 +45,8 @@ public class SecurityConfig {
             .authorizeHttpRequests(authorize -> authorize
                 // 公開端點：首頁、錯誤頁面、靜態資源
                 .requestMatchers("/", "/home", "/error", "/css/**", "/js/**", "/images/**").permitAll()
-                // SAML2 相關端點需要認證
-                .requestMatchers("/saml2/**").permitAll()
+                // SAML2 相關端點公開訪問（包括 metadata 和 SLO）
+                .requestMatchers("/saml2/**", "/logout/saml2/slo").permitAll()
                 // 其他所有請求都需要認證
                 .anyRequest().authenticated()
             )
@@ -53,16 +57,57 @@ public class SecurityConfig {
                 // 登入失敗處理
                 .failureUrl("/login?error=true")
             )
-            // 配置 SAML2 登出
-            .saml2Logout(withDefaults())
+            // 配置 SAML2 登出（Single Logout）
+            .saml2Logout(saml2Logout -> saml2Logout
+                // 配置 logout request resolver
+                .logoutRequest(logoutRequest -> logoutRequest
+                    .logoutRequestResolver(saml2LogoutRequestResolver(relyingPartyRegistrationRepository))
+                )
+                // 配置 logout response
+                .logoutResponse(logoutResponse -> logoutResponse
+                    .logoutUrl("/logout/saml2/slo")
+                )
+            )
             // 配置一般登出
             .logout(logout -> logout
-                .logoutSuccessUrl("/")
+                .logoutUrl("/logout")
+                .logoutSuccessUrl("/?logout=success")
                 .permitAll()
+                .deleteCookies("JSESSIONID")
+                .invalidateHttpSession(true)
+                .clearAuthentication(true)
             )
             // 配置 SAML2 Metadata
             .saml2Metadata(withDefaults());
 
         return http.build();
+    }
+
+    /**
+     * 配置 SAML2 Logout Request Resolver
+     * 
+     * @param relyingPartyRegistrationRepository Relying Party 註冊倉庫
+     * @return Saml2LogoutRequestResolver
+     */
+    @Bean
+    public Saml2LogoutRequestResolver saml2LogoutRequestResolver(
+            RelyingPartyRegistrationRepository relyingPartyRegistrationRepository) {
+        OpenSaml4LogoutRequestResolver logoutRequestResolver = 
+            new OpenSaml4LogoutRequestResolver(relyingPartyRegistrationRepository);
+        // 配置登出後重導向 URL
+        return logoutRequestResolver;
+    }
+
+    /**
+     * 配置登出成功處理器
+     * 
+     * @return LogoutSuccessHandler
+     */
+    @Bean
+    public LogoutSuccessHandler logoutSuccessHandler() {
+        SimpleUrlLogoutSuccessHandler handler = new SimpleUrlLogoutSuccessHandler();
+        handler.setDefaultTargetUrl("/?logout=success");
+        handler.setAlwaysUseDefaultTargetUrl(true);
+        return handler;
     }
 }
