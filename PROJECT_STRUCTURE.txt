@@ -1,0 +1,30 @@
+.
+├── KEYCLOAK_ALTERNATIVE.md
+├── PROJECT_STRUCTURE.txt
+├── QUICKSTART.md
+├── README.md
+├── SUMMARY.md
+├── TESTING.md
+├── cas-server
+│   ├── config
+│   │   └── cas.properties
+│   ├── saml
+│   └── services
+│       └── SpringBoot-SAML-SP-1000.json
+├── default_prompt.md
+├── dev_prompt.md
+├── docker-compose.yml
+├── keycloak
+│   └── realm-export.json
+├── pom.xml
+├── progress.md
+└── src
+    └── main
+        ├── java
+        │   └── com
+        └── resources
+            ├── application.yml
+            ├── static
+            └── templates
+
+13 directories, 15 files
