@@ -1,0 +1,55 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /
+
+spring:
+  application:
+    name: spring-security-saml-test
+  
+  # Thymeleaf 設定
+  thymeleaf:
+    cache: false
+    encoding: UTF-8
+    mode: HTML
+    prefix: classpath:/templates/
+    suffix: .html
+
+  # Spring Security SAML2 設定
+  security:
+    saml2:
+      relyingparty:
+        registration:
+          keycloak:
+            # IDP 的設定（Keycloak）
+            assertingparty:
+              entity-id: http://localhost:8443/realms/saml-demo
+              # IDP Metadata 位置（Keycloak 提供）
+              metadata-uri: http://localhost:8443/realms/saml-demo/protocol/saml/descriptor
+              singlesignon:
+                # SSO 登入端點
+                url: http://localhost:8443/realms/saml-demo/protocol/saml
+                binding: POST
+                sign-request: false # 於開發環境，禁用簽章需求
+              singlelogout:
+                # 登出端點
+                url: http://localhost:8443/realms/saml-demo/protocol/saml
+                binding: POST
+            # SP 的設定
+            entity-id: http://localhost:8080/saml2/service-provider-metadata/keycloak
+            signing:
+              credentials:
+                - certificate-location: classpath:saml/saml-cert.crt
+                  private-key-location: classpath:saml/saml-key.pem
+            acs:
+              # Assertion Consumer Service - 接收 SAML 回應的端點
+              location: http://localhost:8080/login/saml2/sso/keycloak
+              binding: POST
+
+# 日誌設定
+logging:
+  level:
+    root: INFO
+    org.springframework.security: DEBUG
+    org.springframework.security.saml2: DEBUG
+    com.example.saml: DEBUG
