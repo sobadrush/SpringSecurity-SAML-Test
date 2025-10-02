@@ -9,7 +9,18 @@
 
 ## 一鍵啟動
 
-### 1. 啟動 Keycloak IDP
+### 1. 生成 SAML 金鑰和憑證
+
+**⚠️ 首次使用必須執行此步驟**：
+
+```bash
+# 在專案根目錄執行
+./generate-saml-keys.sh
+```
+
+這會生成開發用的 SAML 私鑰和憑證。這些檔案不包含在版本控制中以確保安全。
+
+### 2. 啟動 Keycloak IDP
 
 ```bash
 # 在專案根目錄執行
@@ -25,7 +36,7 @@ docker logs -f keycloak-idp
 
 **首次啟動約需 60-90 秒**（需要下載映像和啟動 Keycloak）
 
-### 2. 驗證 Keycloak 運行
+### 3. 驗證 Keycloak 運行
 
 訪問 Keycloak 管理控制台：
 - URL: http://localhost:8443
@@ -36,7 +47,7 @@ docker logs -f keycloak-idp
 - URL: http://localhost:8443/realms/saml-demo/protocol/saml/descriptor
 - 應該看到 XML 格式的 SAML metadata
 
-### 3. 啟動 Spring Boot 應用
+### 4. 啟動 Spring Boot 應用
 
 ```bash
 # 方式 1: 使用 Maven直接執行
@@ -49,7 +60,7 @@ java -jar target/spring-security-saml-test-1.0.0-SNAPSHOT.jar
 
 應用程式將在 **http://localhost:8080** 啟動
 
-### 4. 開始測試
+### 5. 開始測試
 
 1. **訪問首頁**: http://localhost:8080
 

@@ -107,7 +107,22 @@ SpringSecurity-SAML-Test/
 cd SpringSecurity-SAML-Test
 ```
 
-#### 步驟 2: 啟動 Keycloak (Identity Provider)
+#### 步驟 2: 生成 SAML 金鑰和憑證
+
+**⚠️ 重要**: 為了安全起見，SAML 私鑰和憑證不包含在版本控制中，您需要自己生成：
+
+```bash
+# 執行金鑰生成腳本
+./generate-saml-keys.sh
+```
+
+這個腳本會在 `src/main/resources/saml/` 目錄下生成：
+- `saml-key.pem` - SAML 私鑰（**請勿提交到 Git**）
+- `saml-cert.crt` - SAML 憑證
+
+> 💡 **說明**: 這些檔案僅供開發測試使用。生產環境請使用受信任的憑證機構（CA）簽發的憑證。
+
+#### 步驟 3: 啟動 Keycloak (Identity Provider)
 
 ```bash
 # 啟動 Docker Compose
@@ -128,7 +143,7 @@ docker logs -f keycloak-idp
 
 ✅ **自動配置**: Realm、測試用戶和 SAML Client 會自動匯入，無需手動設定！
 
-#### 步驟 3: 編譯 Spring Boot 應用程式
+#### 步驟 4: 編譯 Spring Boot 應用程式
 
 ```bash
 # 清理並編譯專案
@@ -138,7 +153,7 @@ mvn clean package
 ./mvnw clean package
 ```
 
-#### 步驟 4: 啟動 Spring Boot 應用程式
+#### 步驟 5: 啟動 Spring Boot 應用程式
 
 ```bash
 # 方式 1: 使用 Maven
@@ -384,6 +399,27 @@ public String user(@AuthenticationPrincipal Saml2AuthenticatedPrincipal principa
 3. 測試帳號密碼為**明文存儲**在 Realm 配置中，生產環境需要整合實際的用戶資料庫
 4. 建議在生產環境中啟用**更嚴格的安全設定**（簽章、加密、HTTPS）
 5. Keycloak 管理員密碼應使用更安全的密碼並透過環境變數設定
+
+## 🔐 安全性說明
+
+### SAML 金鑰和憑證管理
+
+本專案的 SAML 私鑰和憑證**不包含在版本控制**中，以符合安全最佳實踐：
+
+- ✅ 私鑰檔案 (`saml-key.pem`) 已加入 `.gitignore`
+- ✅ 憑證檔案 (`saml-cert.crt`) 已加入 `.gitignore`
+- ✅ 提供自動生成腳本 (`generate-saml-keys.sh`)
+
+**為什麼不應該提交私鑰？**
+- 私鑰是敏感的加密材料，一旦洩露可能被用於冒充您的服務
+- Git 歷史會永久保留所有提交的檔案，即使後來刪除也可能被找回
+- 每個環境應該使用不同的金鑰和憑證
+
+**生產環境建議：**
+- 使用受信任的憑證機構（CA）簽發的憑證
+- 將私鑰存儲在安全的金鑰管理系統（如 AWS KMS、Azure Key Vault、HashiCorp Vault）
+- 定期輪換金鑰和憑證
+- 啟用 SAML 訊息簽章和加密
 
 ## 📞 支援
 

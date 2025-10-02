@@ -45,6 +45,14 @@ cas-server/saml/*
 *.ear
 *.class
 
+# SAML keys and certificates (security sensitive)
+src/main/resources/saml/*.pem
+src/main/resources/saml/*.key
+src/main/resources/saml/*.crt
+src/main/resources/saml/*.jks
+src/main/resources/saml/*.p12
+!src/main/resources/saml/.gitkeep
+
 # Application specific
 application-local.yml
 application-dev.yml
