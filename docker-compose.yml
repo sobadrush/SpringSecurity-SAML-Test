@@ -1,0 +1,36 @@
+services:
+  keycloak:
+    image: quay.io/keycloak/keycloak:23.0
+    container_name: keycloak-idp
+    hostname: keycloak
+    ports:
+      - "8443:8080"
+    environment:
+      # Keycloak 管理員帳號設定
+      - KEYCLOAK_ADMIN=admin
+      - KEYCLOAK_ADMIN_PASSWORD=admin
+      # 啟用 HTTP（開發環境）
+      - KC_HTTP_ENABLED=true
+      - KC_HOSTNAME_STRICT=false
+      - KC_HOSTNAME_STRICT_HTTPS=false
+      - KC_HEALTH_ENABLED=true
+      # 啟用自動匯入 Realm 配置
+      - KC_FEATURES=preview
+    command:
+      - start-dev
+      - --import-realm
+    volumes:
+      # 掛載 Realm 配置檔案（自動匯入）
+      - ./keycloak/realm-export.json:/opt/keycloak/data/import/realm-export.json:ro
+    networks:
+      - saml-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/health/ready"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 90s
+
+networks:
+  saml-network:
+    driver: bridge
