@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>登入錯誤 - Spring Security SAML Test</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        .container {
+            background: white;
+            border-radius: 10px;
+            padding: 40px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        }
+        h1 {
+            color: #dc3545;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .error-box {
+            background: #f8d7da;
+            border: 1px solid #f5c6cb;
+            border-left: 4px solid #dc3545;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+            color: #721c24;
+        }
+        .info-box {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            border-left: 4px solid #ffc107;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+            color: #856404;
+        }
+        .btn {
+            display: inline-block;
+            padding: 12px 30px;
+            background: #667eea;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            margin: 10px 5px;
+            transition: background 0.3s;
+        }
+        .btn:hover {
+            background: #5568d3;
+        }
+        .button-group {
+            text-align: center;
+            margin-top: 30px;
+        }
+        ul {
+            line-height: 2;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>❌ SAML 認證失敗</h1>
+        
+        <div class="error-box">
+            <h3>登入錯誤</h3>
+            <p>很抱歉，SAML 認證過程中發生錯誤。</p>
+        </div>
+
+        <div class="info-box">
+            <h3>可能的原因：</h3>
+            <ul>
+                <li>帳號或密碼錯誤</li>
+                <li>CAS Server 未正常運行</li>
+                <li>SAML 配置不正確</li>
+                <li>網路連線問題</li>
+                <li>Session 過期</li>
+            </ul>
+        </div>
+
+        <div class="info-box">
+            <h3>建議處理方式：</h3>
+            <ul>
+                <li>檢查 CAS Server 是否已啟動（docker-compose ps）</li>
+                <li>確認測試帳號：casuser / Mellon</li>
+                <li>查看應用程式日誌</li>
+                <li>檢查瀏覽器控制台錯誤訊息</li>
+            </ul>
+        </div>
+
+        <div class="button-group">
+            <a href="/" class="btn">🏠 返回首頁</a>
+            <a href="/user" class="btn">🔄 重新嘗試登入</a>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>錯誤 - Spring Security SAML Test</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        .container {
+            background: white;
+            border-radius: 10px;
+            padding: 40px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        }
+        h1 {
+            color: #dc3545;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .error-box {
+            background: #f8d7da;
+            border: 1px solid #f5c6cb;
+            border-left: 4px solid #dc3545;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+            color: #721c24;
+        }
+        .btn {
+            display: inline-block;
+            padding: 12px 30px;
+            background: #667eea;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            margin: 10px 5px;
+            transition: background 0.3s;
+        }
+        .btn:hover {
+            background: #5568d3;
+        }
+        .button-group {
+            text-align: center;
+            margin-top: 30px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>⚠️ 系統錯誤</h1>
+        
+        <div class="error-box">
+            <h3>發生錯誤</h3>
+            <p>很抱歉，系統處理您的請求時發生錯誤。</p>
+            <p>請稍後再試，或聯繫系統管理員。</p>
+        </div>
+
+        <div class="button-group">
+            <a href="/" class="btn">🏠 返回首頁</a>
+        </div>
+    </div>
+</body>
+</html>
