@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spring Security SAML Test - 首頁</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        .container {
+            background: white;
+            border-radius: 10px;
+            padding: 40px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .info-box {
+            background: #f8f9fa;
+            border-left: 4px solid #667eea;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+        .btn {
+            display: inline-block;
+            padding: 12px 30px;
+            background: #667eea;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            margin: 10px 5px;
+            transition: background 0.3s;
+        }
+        .btn:hover {
+            background: #5568d3;
+        }
+        .button-group {
+            text-align: center;
+            margin-top: 30px;
+        }
+        ul {
+            line-height: 2;
+        }
+        .feature {
+            margin: 15px 0;
+            padding-left: 25px;
+            position: relative;
+        }
+        .feature:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #667eea;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔐 Spring Security SAML2 認證測試</h1>
+        
+        <div class="info-box">
+            <h2>歡迎！</h2>
+            <p>這是一個 Spring Security SAML2 認證系統的示範應用程式。</p>
+            <p>本系統使用 <strong>Keycloak</strong> 作為 Identity Provider (IDP)。</p>
+        </div>
+
+        <div class="info-box">
+            <h3>系統功能：</h3>
+            <div class="feature">SAML2 單一登入 (SSO)</div>
+            <div class="feature">Keycloak IDP 整合</div>
+            <div class="feature">用戶屬性自動傳遞</div>
+            <div class="feature">安全登出機制</div>
+            <div class="feature">完整的 SAML Metadata 支援</div>
+        </div>
+
+        <div class="info-box">
+            <h3>測試帳號：</h3>
+            <ul>
+                <li><strong>testuser</strong> / password123（一般用戶）</li>
+                <li><strong>admin</strong> / admin123（管理員）</li>
+            </ul>
+            <p><small>💡 IDP: Keycloak (http://localhost:8443)</small></p>
+        </div>
+
+        <div class="button-group">
+            <a href="/user" class="btn">🚀 開始使用 SAML 登入</a>
+            <a href="/saml2/service-provider-metadata/keycloak" class="btn" target="_blank">📄 查看 SP Metadata</a>
+        </div>
+    </div>
+</body>
+</html>
