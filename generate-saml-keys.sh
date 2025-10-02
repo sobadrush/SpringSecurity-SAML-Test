@@ -40,7 +40,8 @@ fi
 echo "Generating private key and self-signed certificate..."
 echo ""
 
-openssl req -x509 -newkey rsa:2048 -keyout "$KEY_FILE" -out "$CERT_FILE" -days 365 -nodes \
+# Prevent MSYS2/Git Bash path conversion from breaking the -subj value on Windows
+MSYS2_ARG_CONV_EXCL="*" openssl req -x509 -newkey rsa:2048 -keyout "$KEY_FILE" -out "$CERT_FILE" -days 365 -nodes \
     -subj "/C=TW/ST=Taiwan/L=Taipei/O=Example/OU=IT/CN=localhost"
 
 if [ $? -eq 0 ]; then
